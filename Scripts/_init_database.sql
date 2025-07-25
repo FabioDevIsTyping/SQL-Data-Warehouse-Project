@@ -12,6 +12,7 @@ Running this script will entirely drop the 'DataWarehouse' database if it alread
 USE master;
 GO
 
+-- If set to 1 it deletes the database 'DataWarehouse' if it already exists
 DECLARE @dropIfExists BIT = 1;
 
 IF EXISTS (SELECT name FROM sys.databases WHERE name = N'DataWarehouse')
@@ -30,6 +31,7 @@ BEGIN
 END
 GO
 
+-- Create the Database 'DataWarehouse'
 PRINT 'Creating DataWarehouse...';
 CREATE DATABASE DataWarehouse;
 GO
@@ -38,9 +40,11 @@ ALTER DATABASE DataWarehouse SET RECOVERY SIMPLE;
 -- ALTER DATABASE DataWarehouse SET COMPATIBILITY_LEVEL = 150;
 GO
 
+-- Use current Database
 USE DataWarehouse;
 GO
 
+-- Create three schemas: 'bronze', 'silver' and 'gold' for the medallion architecture of our data warehouse.
 PRINT 'Creating schemas...';
 IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'bronze')
     EXEC('CREATE SCHEMA bronze');
