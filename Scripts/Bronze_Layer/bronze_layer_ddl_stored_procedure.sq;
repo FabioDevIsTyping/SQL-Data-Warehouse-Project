@@ -22,11 +22,14 @@ Warning:
 -----------------------------------------------------------------------------------------
 */
 
+EXEC bronze.load_bronze ;
+
 CREATE OR ALTER PROCEDURE bronze.load_bronze AS 
 BEGIN
 	PRINT '========================'
 	PRINT 'Starting Bronze Layer Load'
 	PRINT '========================'
+	PRINT 'Checking BULK INSERT path: D:\SQL-Projects\sql-data-warehouse-project\datasets\source_crm\cust_info.csv';
 
 	DECLARE @start_time DATETIME, @end_time DATETIME, @start_time_total DATETIME, @end_time_total DATETIME;
 
@@ -43,7 +46,7 @@ BEGIN
 		SET @start_time = GETDATE();
 		TRUNCATE TABLE bronze.crm_cust_info;
 		BULK INSERT bronze.crm_cust_info
-		FROM 'D:\SQL-Projects\sql-data-warehouse-project\datasets\source_crm\cust_info.csv'
+		FROM 'C:\sql-data-warehouse-project\datasets\source_crm\cust_info.csv'
 		WITH (
 			FIRSTROW = 2,
 			FIELDTERMINATOR = ',',
@@ -59,7 +62,7 @@ BEGIN
 		SET @start_time = GETDATE();
 		TRUNCATE TABLE bronze.crm_prd_info;
 		BULK INSERT bronze.crm_prd_info
-		FROM 'D:\SQL-Projects\sql-data-warehouse-project\datasets\source_crm\prd_info.csv'
+		FROM 'C:\sql-data-warehouse-project\datasets\source_crm\prd_info.csv'
 		WITH (
 			FIRSTROW = 2,
 			FIELDTERMINATOR = ',',
@@ -75,7 +78,7 @@ BEGIN
 		SET @start_time = GETDATE();
 		TRUNCATE TABLE bronze.crm_sales_details;
 		BULK INSERT bronze.crm_sales_details
-		FROM 'D:\SQL-Projects\sql-data-warehouse-project\datasets\source_crm\sales_details.csv'
+		FROM 'C:\sql-data-warehouse-project\datasets\source_crm\sales_details.csv'
 		WITH (
 			FIRSTROW = 2,
 			FIELDTERMINATOR = ',',
@@ -104,7 +107,7 @@ BEGIN
 		SET @start_time = GETDATE();
 		TRUNCATE TABLE bronze.erp_cust_az12;
 		BULK INSERT bronze.erp_cust_az12
-		FROM 'D:\SQL-Projects\sql-data-warehouse-project\datasets\source_erp\CUST_AZ12.csv'
+		FROM 'C:\sql-data-warehouse-project\datasets\source_erp\CUST_AZ12.csv'
 		WITH (
 			FIRSTROW = 2,
 			FIELDTERMINATOR = ',',
@@ -120,7 +123,7 @@ BEGIN
 		SET @start_time = GETDATE();
 		TRUNCATE TABLE bronze.erp_loc_a101;
 		BULK INSERT bronze.erp_loc_a101
-		FROM 'D:\SQL-Projects\sql-data-warehouse-project\datasets\source_erp\LOC_A101.csv'
+		FROM 'C:\sql-data-warehouse-project\datasets\source_erp\LOC_A101.csv'
 		WITH (
 			FIRSTROW = 2,
 			FIELDTERMINATOR = ',',
@@ -136,7 +139,7 @@ BEGIN
 		SET @start_time = GETDATE();
 		TRUNCATE TABLE bronze.erp_px_cat_g1v2;
 		BULK INSERT bronze.erp_px_cat_g1v2
-		FROM 'D:\SQL-Projects\sql-data-warehouse-project\datasets\source_erp\PX_CAT_G1V2.csv'
+		FROM 'C:\sql-data-warehouse-project\datasets\source_erp\PX_CAT_G1V2.csv'
 		WITH (
 			FIRSTROW = 2,
 			FIELDTERMINATOR = ',',
@@ -165,3 +168,6 @@ BEGIN
 	PRINT'Total Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time_total, @end_time_total) AS NVARCHAR) + 'seconds'; 
 	PRINT'------------------------------------'
 END;
+
+
+SELECT * FROM bronze.crm_cust_info;
