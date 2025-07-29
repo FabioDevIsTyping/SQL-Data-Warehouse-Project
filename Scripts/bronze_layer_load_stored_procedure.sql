@@ -28,10 +28,12 @@ BEGIN
 	PRINT 'Starting Bronze Layer Load'
 	PRINT '========================'
 
-	DECLARE @start_time DATETIME, @end_time DATETIME;
+	DECLARE @start_time DATETIME, @end_time DATETIME, @start_time_total DATETIME, @end_time_total DATETIME;
 
 	-- CRM Data Load
 	BEGIN TRY
+	    SET @start_time_total = GETDATE();
+
 		PRINT '========================'
 		PRINT 'Loading the CRM Tables'
 		PRINT '========================'
@@ -144,6 +146,7 @@ BEGIN
 		PRINT 'erp_px_cat_g1v2 loaded successfully.';
 		PRINT 'LOAD DURATION: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
 		PRINT '---------------------------------------------------------------------'
+	    SET @end_time_total = GETDATE();
 
 	END TRY
 	BEGIN CATCH
@@ -155,4 +158,10 @@ BEGIN
 	PRINT '========================'
 	PRINT 'Bronze Layer Load Complete'
 	PRINT '========================'
+
+	PRINT'------------------------------------'
+	PRINT'           Total Summary            '
+	PRINT'------------------------------------'
+	PRINT'Total Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time_total, @end_time_total) AS NVARCHAR) + 'seconds'; 
+	PRINT'------------------------------------'
 END;
